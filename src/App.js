@@ -17,10 +17,14 @@ class App extends Component {
 
     return (
             <div className="App">
-              <Nav/>
+              <Nav toggleNote={this.toggleNote} showNote={showNote}/>
               { showNote ? <Note/> : <List/> }
             </div>
     );
+  }
+
+  toggleNote = () => {
+    this.setState({ showNote: !this.state.showNote});
   }
 }
 
