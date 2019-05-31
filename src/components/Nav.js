@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 
 class Nav extends React.Component {
   render () {
-    const { toggleNote, showNote } = this.props;
-
+    const { toggleNote, showNote } = this.props;  // TODO - Ask Michael about how toggleNote is being used - assume
+                                                  // function?
     return (
       <div className='nav-container'>
         <div className='nav-logo'>Note</div>
