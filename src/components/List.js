@@ -8,7 +8,7 @@ class List extends React.Component {
   }
 
   render () {
-    const { notes } = this.props;
+    const { notes, getNote } = this.props;
 
     // Builds a card for each note
     const cards = notes.map((note, index) => {
@@ -17,6 +17,7 @@ class List extends React.Component {
                 key={index}
                 index={index}
                 note={note}
+                getNote={ getNote }
               />
       );
     });
