@@ -4,6 +4,10 @@ import Nav from './components/Nav';
 import List from './components/List';
 import Note from './components/Note';
 import axios from 'axios';
+import urlFor from './helpers/urlFor';
+
+// TODO - Ask Michael - if you put all the imports in a file and import that file do you get all those imports too?
+// TODO - Ask Michael about naming convention for file names, functions and variables
 
 class App extends Component {
   constructor () {
@@ -28,8 +32,9 @@ class App extends Component {
     this.setState({ showNote: !this.state.showNote});
   }
 
+  // TODO - Ask Michael if promises are specific to Axios or just the .get, .then .catch format
   getNotes = () => {
-    axios.get('https://gamba-notes.herokuapp.com/notes')
+    axios.get(urlFor('notes'))
     .then((res) => console.log(res.data))
     .catch((err) => console.log(err.data));
   }
