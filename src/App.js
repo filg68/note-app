@@ -56,8 +56,11 @@ class App extends Component {
     .catch ((err) => console.log(err.response.data));
   }
 
+  //TODO Ask Michael about the res\err naming and if it is an arbitrary convention
   submitNote = (data) => {
-    console.log(data);
+    axios.post(urlFor('notes'), data)
+    .then((res) => this.setState({ showNote: false }))
+    .catch((err) => console.log(err.response.data));
   }
 
 }
