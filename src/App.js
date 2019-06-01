@@ -40,7 +40,10 @@ class App extends Component {
   }
 
   toggleNote = () => {
-    this.setState({ showNote: !this.state.showNote});
+    this.setState({
+                    showNote: !this.state.showNote,
+                    note: {}
+    });
   };
 
   // TODO - Ask Michael if promises are specific to Axios or just the .get, .then .catch format
