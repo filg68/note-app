@@ -34,6 +34,7 @@ class App extends Component {
                       <List getNotes={this.getNotes}
                             notes={ notes }
                             getNote={ this.getNote }
+                            deleteNote={this.deleteNote}
                       /> }
             </div>
     );
@@ -75,8 +76,16 @@ class App extends Component {
     this.performSubmissionRequest(data, id)
     .then(() => this.setState({ showNote: false }))
     .catch((err) => console.log(err.response.data));
-  }
+  };
 
+  //TODO Ask Michael --- does every function that the app need to perfomr live in this file?
+
+  deleteNote = (id) => {
+    const newNotesState = this.state.notes.filter((note) => note.id !== id );
+    axios.delete(urlFor(`notes/${id}`))
+    .then ((res) => this.setState({notes: newNotesState }))
+    .catch ((err) => console.log(err.response.data));
+  };
 }
 
 export default App;
