@@ -1,6 +1,15 @@
 import React from 'react';
 
 class NoteCard extends React.Component {
+
+  renderTags(note) {
+    return note.tags.map((tag, index) =>
+      <span className='note-card-tag' key={index}>
+        {tag.name}
+      </span>
+    );
+  };
+
   render () {
     const { note, getNote, deleteNote } = this.props; // TODO Ask Michael - destructuring is an E6 feature right?
 
@@ -12,6 +21,9 @@ class NoteCard extends React.Component {
               <div className='note-card-content'>
                 {note.content}
               </div>
+              <span classname='note-card-tags'>
+                {this.renderTags(note)}
+              </span>
               <span className='note-card-delete' onClick={() => deleteNote(note.id)}>
                 <i className='material-icons'>close</i>
               </span>
