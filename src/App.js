@@ -5,6 +5,7 @@ import List from './components/List';
 import Note from './components/Note';
 import axios from 'axios';
 import urlFor from './helpers/urlFor';
+import Flash from './components/Flash';
 
 // TODO - Ask Michael - if you put all the imports in a file and import that file do you get all those imports too?
 // TODO - Ask Michael about naming convention for file names, functions and variables
@@ -16,16 +17,18 @@ class App extends Component {
       showNote: false,
       notes: [],
       note: {},
-      newTag: false
+      newTag: false,
+      error:''
     };
   }
 
   render () {
-    const { showNote, notes, note, newTag } = this.state;
+    const { showNote, notes, note, newTag, error } = this.state;
 
     return (
             <div className="App">
               <Nav toggleNote={this.toggleNote} showNote={showNote}/>
+              {error && <Flash error={error} resetError={this.resetError} />}
               { showNote
                       ?
                       <Note note={note}
@@ -50,7 +53,8 @@ class App extends Component {
   toggleNote = () => {
     this.setState({
                     showNote: !this.state.showNote,
-                    note: {}
+                    note: {},
+                    error: ''
     });
   };
 
@@ -81,8 +85,15 @@ class App extends Component {
   //TODO Ask Michael about the res\err naming and if it is an arbitrary convention
   submitNote = (data, id) => {
     this.performSubmissionRequest(data, id)
-    .then(() => this.setState({ showNote: false }))
-    .catch((err) => console.log(err.response.data));
+    .then(() => this.setState({ showNote: false, error: '' }))
+    .catch((err) => {
+      const { errors } = err.response.data;
+      if (errors.content) {
+        this.setState({ error: 'Missing Note Content!' });
+      } else if (errors.title) {
+        this.setState({error: 'Missing Note Title!'});
+      }
+    });
   };
 
   //TODO Ask Michael --- does every function that the app need to perfomr live in this file?
@@ -105,7 +116,12 @@ class App extends Component {
   submitTag = (data, noteId) => {
     axios.post(urlFor(`notes/${noteId}/tags`), data)
     .then(() => this.getNote(noteId))
-    .catch((err) => console.log(err.response.data));
+    .catch((err) => {
+      const { errors } = err.response.data;
+      if (errors.name) {
+        this.setState({ error: 'Missing Tag Name!'});
+      }
+    });
   };
 
   deleteTag = (noteId, tagId) => {
@@ -113,6 +129,8 @@ class App extends Component {
     .then(() => this.getNote(noteId))
     .catch((err) => console.log(err.response.data))
   };
+
+  resetError = () => { this.setState({ error: '' })};
 }
 
 export default App;
